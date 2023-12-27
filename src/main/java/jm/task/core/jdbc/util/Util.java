@@ -15,16 +15,21 @@ import java.util.Properties;
 
 public class Util {
 
-    private static final String dbUrl = "jdbc:mysql://localhost:3306/usersbase";
-    private static final String dbUserName = "root";
-    private static final String dbPass = "123456789"; //"my179sql";
+    private final String dbUrl = "jdbc:mysql://localhost:3306/usersbase";
+    private final String dbUserName = "root";
+    private final String dbPass = "root"; //"my179sql";
     Driver driver = new com.mysql.cj.jdbc.Driver();
-    private static SessionFactory sessionFactory;
+
+    private SessionFactory sessionFactory;
 
     public Util() throws SQLException {
     }
 
-    public static SessionFactory getSessionFactory() {//todo: static - ломаем парадигму ООП.. уже озвучивали.
+    public SessionFactory getSessionFactory() {
+        return configSessionFactory();
+    }
+
+    private SessionFactory configSessionFactory() {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = getConfiguration();
@@ -36,13 +41,13 @@ public class Util {
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             } catch (Exception e) {
-                System.out.println("Ошибка создания/настройки sessionFactory");
+                System.out.println("Ошибка настройки sessionFactory");
             }
         }
         return sessionFactory;
     }
 
-    private static Configuration getConfiguration() {
+    private Configuration getConfiguration() {
         Configuration configuration = new Configuration();
         Properties settings = new Properties();
         settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
