@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void dropUsersTable() {
-
+        //todo: codeStyle
         userService.dropUsersTable();
         System.out.println("Таблица Users удалена");
     }

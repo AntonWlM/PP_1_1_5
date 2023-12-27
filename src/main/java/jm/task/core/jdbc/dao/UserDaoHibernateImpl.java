@@ -10,15 +10,6 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
-    private SessionFactory sessionFactory;
-    public UserDaoHibernateImpl() {
-        try {
-            sessionFactory = new Util().getSessionFactory();
-        } catch (Exception e) {
-            System.out.println("ошибка создания SessionFactory");
-        }
-    }
-
 
     private static final String createUsersQuery = "CREATE TABLE IF NOT EXISTS users " +
             "(id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
@@ -26,6 +17,19 @@ public class UserDaoHibernateImpl implements UserDao {
             "age TINYINT NOT NULL)";
 
     private static final String dropUsersQuery = "DROP TABLE IF EXISTS users";
+
+
+    private SessionFactory sessionFactory;
+
+    public UserDaoHibernateImpl() {
+        try {
+            sessionFactory = new Util().getSessionFactory();
+        } catch (Exception e) {
+            System.out.println("ошибка создания SessionFactory");//todo: critic_bug - в конструкторе не делается проверка, это делается в классе поставщике инстанса SessionFactory sessionFactory. То есть упасть должно в Util
+        }
+    }
+
+
 
     @Override
     public void createUsersTable() {
@@ -65,7 +69,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        User user;
+        User user;//todo: зачем вынесли? codeStyle
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             user = session.get(User.class, id);
@@ -75,9 +79,10 @@ public class UserDaoHibernateImpl implements UserDao {
                 throw new IllegalStateException("Invalid removeUserById: " + e.getMessage());
         }
     }
+
     @Override
     public List<User> getAllUsers() {
-        List<User> users = null;
+        List<User> users = null;//todo: codeStyle
         try (Session session = sessionFactory.openSession()) {
             users = session.createQuery("from User").list();
         } catch (Exception e) {
