@@ -13,33 +13,45 @@ public class UserServiceImpl implements UserService {
         userService = new UserDaoHibernateImpl();
     }
 
-    //todo: в кажом методе - должно присутствоватьлогирование (иммитация чеерз sout выполняемой методом работы)
-
     @Override
     public void createUsersTable() {
         userService.createUsersTable();
+        System.out.println("Таблица Users создана");
     }
 
     @Override
     public void dropUsersTable() {
+
         userService.dropUsersTable();
+        System.out.println("Таблица Users удалена");
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
+
         userService.saveUser(name, lastName, age);
+        System.out.println("User: " + name + " добавлен");
     }
 
     @Override
     public void removeUserById(long id) {
+
         userService.removeUserById(id);
+        System.out.println("User с Id = " + id + " удален");
     }
 
     @Override
     public List<User> getAllUsers() {
-        return userService.getAllUsers();
+        List<User> list = userService.getAllUsers();
+        if (list != null) {
+            System.out.println("Список Users успешно получен");
+        }
+        return list;
     }
 
     @Override
-    public void cleanUsersTable() { userService.cleanUsersTable(); }
+    public void cleanUsersTable() {
+        userService.cleanUsersTable();
+        System.out.println("Таблица Users очищена");
+    }
 }
