@@ -24,7 +24,7 @@ public class Util {
     public Util() throws SQLException {
     }
 
-    public static SessionFactory getSessionFactory() {
+    public static SessionFactory getSessionFactory() {//todo: static - ломаем парадигму ООП.. уже озвучивали.
         if (sessionFactory == null) {
             try {
                 Configuration configuration = getConfiguration();

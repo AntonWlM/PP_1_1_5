@@ -7,10 +7,13 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
+    private final UserDaoHibernateImpl userService;
+
     public UserServiceImpl() {
         userService = new UserDaoHibernateImpl();
     }
-    private final UserDaoHibernateImpl userService;
+
+    //todo: в кажом методе - должно присутствоватьлогирование (иммитация чеерз sout выполняемой методом работы)
 
     @Override
     public void createUsersTable() {
