@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -21,12 +22,8 @@ public class UserDaoHibernateImpl implements UserDao {
 
     private SessionFactory sessionFactory;
 
-    public UserDaoHibernateImpl() {
-        try {
+    public UserDaoHibernateImpl() throws SQLException {
             sessionFactory = new Util().getSessionFactory();
-        } catch (Exception e) {
-            System.out.println("ошибка создания SessionFactory");//todo: critic_bug - в конструкторе не делается проверка, это делается в классе поставщике инстанса SessionFactory sessionFactory. То есть упасть должно в Util
-        }
     }
 
 
@@ -69,10 +66,9 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        User user;//todo: зачем вынесли? codeStyle
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            user = session.get(User.class, id);
+            User user = session.get(User.class, id);
             session.delete(user);
             transaction.commit();
         } catch (Exception e) {
@@ -82,13 +78,12 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> users = null;//todo: codeStyle
         try (Session session = sessionFactory.openSession()) {
-            users = session.createQuery("from User").list();
+            List<User> users = session.createQuery("from User").list();
+            return  users;
         } catch (Exception e) {
-                throw new IllegalStateException("Invalid getAllUsers: " + e.getMessage());
+            throw new IllegalStateException("Invalid getAllUsers: " + e.getMessage());
         }
-        return users;
     }
 
     @Override
