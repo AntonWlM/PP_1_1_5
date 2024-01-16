@@ -15,43 +15,60 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUsersTable() {
-        userService.createUsersTable();
-        System.out.println("Таблица Users создана");
+        try {
+            userService.createUsersTable();
+        } catch (Exception e) {
+            throw new IllegalStateException("Invalid createUsersTable: " + e.getMessage());
+        }
     }
 
     @Override
     public void dropUsersTable() {
-        //todo: codeStyle
+       try {
         userService.dropUsersTable();
-        System.out.println("Таблица Users удалена");
+         } catch (Exception e) {
+        throw new IllegalStateException("Invalid dropUsersTable: " + e.getMessage());
+        }
     }
+    
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-
-        userService.saveUser(name, lastName, age);
-        System.out.println("User: " + name + " добавлен");
+        try {
+            userService.saveUser(name, lastName, age);
+        } catch (Exception e) {
+        throw new IllegalStateException("Invalid saveUser: " + e.getMessage());
+        }
     }
 
     @Override
     public void removeUserById(long id) {
-
-        userService.removeUserById(id);
-        System.out.println("User с Id = " + id + " удален");
+        try {
+            userService.removeUserById(id);
+        } catch (Exception e) {
+        throw new IllegalStateException("Invalid removeUserById: " + e.getMessage());
+        }
     }
 
     @Override
     public List<User> getAllUsers() {
+        try {
         List<User> list = userService.getAllUsers();
-        if (list != null) {
-            System.out.println("Список Users успешно получен");
+        if (list == null) {
+            System.out.println("Ошибка получения списка Users");
         }
         return list;
+        } catch (Exception e) {
+            throw new IllegalStateException("Invalid getAllUsers: " + e.getMessage());
+        }
     }
 
     @Override
     public void cleanUsersTable() {
+        try {
         userService.cleanUsersTable();
-        System.out.println("Таблица Users очищена");
+        } catch (Exception e) {
+        throw new IllegalStateException("Invalid cleanUsersTable: " + e.getMessage());
+        }
     }
 }
